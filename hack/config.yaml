@@ -1,0 +1,17 @@
+
+# CLI tool, only in development environment.
+# https://goframe.org/pages/viewpage.action?pageId=3673173
+gfcli:
+  gen:
+    dao:
+      - link: "mysql:push_service_go:3TsEbyerJ872fLD3@tcp(120.24.211.49:3306)/push_service_go" # 数据库链接
+        jsonCase: Snake # 蛇型json命名
+
+  build:
+    name: "gf_build"
+    arch: "amd64"
+    system: "linux"
+    mod: "none"
+    packSrc: "resource,manifest"
+    version: "v0.0.5"
+    extra: ""

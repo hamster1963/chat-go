@@ -1,0 +1,6 @@
+version: '3'
+services:
+  push-go:
+    image: hamster1963/push-go
+    ports:
+      - "10099:10099"
