@@ -33,7 +33,7 @@ func (s *sPushCore) PushCore(ctx context.Context, in *model.PushBasicData) (err 
 	g.Dump(serviceInfo)
 	if err != nil {
 		err := service.PushLog().AddPushLog(ctx, &model.AddPushLogInput{
-			PushInfo:    in.PushData,
+			PushInfo:    gconv.String(in.PushData),
 			PushService: "error",
 			PushTime:    gtime.Now(),
 			PushStatus:  false,
@@ -44,13 +44,12 @@ func (s *sPushCore) PushCore(ctx context.Context, in *model.PushBasicData) (err 
 		}
 	}
 	g.Dump(serviceInfo.ServiceName)
-	nowTime := gtime.Now()
 	err = service.PushService().UpdatePushServicePushTime(ctx, serviceInfo.Id)
 	if err != nil {
 		err = service.PushLog().AddPushLog(ctx, &model.AddPushLogInput{
-			PushInfo:    "in.PushData",
+			PushInfo:    gconv.String(in.PushData),
 			PushService: serviceInfo.ServiceName,
-			PushTime:    nowTime,
+			PushTime:    gtime.Now(),
 			PushStatus:  false,
 			ErrInfo:     err.Error(),
 		})
@@ -62,9 +61,9 @@ func (s *sPushCore) PushCore(ctx context.Context, in *model.PushBasicData) (err 
 	baseList, err := service.PushDevice().GetDeviceBaseListByServiceId(ctx, serviceInfo.Id)
 	if err != nil {
 		err = service.PushLog().AddPushLog(ctx, &model.AddPushLogInput{
-			PushInfo:    "in.PushData",
+			PushInfo:    gconv.String(in.PushData),
 			PushService: serviceInfo.ServiceName,
-			PushTime:    nowTime,
+			PushTime:    gtime.Now(),
 			PushStatus:  false,
 			ErrInfo:     err.Error(),
 		})
@@ -79,9 +78,9 @@ func (s *sPushCore) PushCore(ctx context.Context, in *model.PushBasicData) (err 
 	decode, err := gjson.Decode(in.PushData)
 	if err != nil {
 		err = service.PushLog().AddPushLog(ctx, &model.AddPushLogInput{
-			PushInfo:    "in.PushData",
+			PushInfo:    gconv.String(in.PushData),
 			PushService: serviceInfo.ServiceName,
-			PushTime:    nowTime,
+			PushTime:    gtime.Now(),
 			PushStatus:  false,
 			ErrInfo:     err.Error(),
 		})
@@ -98,18 +97,18 @@ func (s *sPushCore) PushCore(ctx context.Context, in *model.PushBasicData) (err 
 		postData := g.Map{
 			"icon":  "http://120.24.211.49:3999/upload/logo1.png",
 			"body":  msg,
-			"title": "Uptime",
+			"title": serviceInfo.ServiceName,
 			"sound": "calypso",
-			"group": "UptimeKuma",
+			"group": serviceInfo.ServiceName,
 		}
 		// 获取推送设备信息
 		for _, v := range baseList {
 			err := globalPost(v.BaseUrl, postData)
 			if err != nil {
 				err = service.PushLog().AddPushLog(ctx, &model.AddPushLogInput{
-					PushInfo:    "in.PushData",
+					PushInfo:    gconv.String(in.PushData),
 					PushService: serviceInfo.ServiceName,
-					PushTime:    nowTime,
+					PushTime:    gtime.Now(),
 					PushStatus:  false,
 					ErrInfo:     err.Error(),
 				})
@@ -126,18 +125,18 @@ func (s *sPushCore) PushCore(ctx context.Context, in *model.PushBasicData) (err 
 		postData := g.Map{
 			"icon":  "https://120.24.211.49/favicon.ico",
 			"body":  msg,
-			"title": "DDNS",
+			"title": serviceInfo.ServiceName,
 			"sound": "shake",
-			"group": "DDNS-GO",
+			"group": serviceInfo.ServiceName,
 		}
 		// 获取推送设备信息
 		for _, v := range baseList {
 			err := globalPost(v.BaseUrl, postData)
 			if err != nil {
 				err = service.PushLog().AddPushLog(ctx, &model.AddPushLogInput{
-					PushInfo:    "in.PushData",
+					PushInfo:    gconv.String(in.PushData),
 					PushService: serviceInfo.ServiceName,
-					PushTime:    nowTime,
+					PushTime:    gtime.Now(),
 					PushStatus:  false,
 					ErrInfo:     err.Error(),
 				})
@@ -153,9 +152,9 @@ func (s *sPushCore) PushCore(ctx context.Context, in *model.PushBasicData) (err 
 	}
 
 	err = service.PushLog().AddPushLog(ctx, &model.AddPushLogInput{
-		PushInfo:    "in.PushData",
+		PushInfo:    gconv.String(in.PushData),
 		PushService: serviceInfo.ServiceName,
-		PushTime:    nowTime,
+		PushTime:    gtime.Now(),
 		PushStatus:  true,
 		ErrInfo:     "",
 	})
