@@ -14,7 +14,7 @@ ADD ./service   $WORKDIR/service
 RUN chmod +x $WORKDIR/service
 
 # 增加端口绑定
-EXPOSE 10399
+EXPOSE 10400
 
 
 ###############################################################################

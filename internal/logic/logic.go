@@ -6,8 +6,4 @@ package logic
 
 import (
 	_ "push/internal/logic/middleware"
-	_ "push/internal/logic/s_push_core"
-	_ "push/internal/logic/s_push_device"
-	_ "push/internal/logic/s_push_log"
-	_ "push/internal/logic/s_push_service"
 )

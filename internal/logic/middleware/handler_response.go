@@ -14,6 +14,11 @@ type defaultHandlerResponse struct {
 	Data       interface{} `json:"data"    dc:"Result data for certain request according API definition"`
 }
 
+func MiddlewareCORS(r *ghttp.Request) {
+	r.Response.CORSDefault()
+	r.Middleware.Next()
+}
+
 func HandlerResponse(r *ghttp.Request) {
 	r.Middleware.Next()
 

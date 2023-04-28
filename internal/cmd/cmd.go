@@ -5,9 +5,12 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gcmd"
+	"github.com/gogf/gf/v2/os/gcron"
 	"push/internal/consts"
 	"push/internal/controller"
 	"push/internal/logic/middleware"
+	"push/utility/network_utils"
+	"push/utility/push_utils"
 )
 
 var (
@@ -22,14 +25,52 @@ var (
 				group.ALL("/", func(r *ghttp.Request) {
 					r.Response.Write(consts.Ui)
 				})
-
+				group.Middleware(middleware.MiddlewareCORS)
 				group.Middleware(middleware.HandlerResponse)
 				group.Bind(
-					controller.PushService, // 推送服务
-					controller.PushDevice,  // 推送设备
-					controller.PushCore,    // 推送核心
+					controller.DataCore,
 				)
 			})
+			g.Dump("开始获取科学上网网速")
+			_, err = gcron.AddSingleton(ctx, "* * * * * *", func(ctx context.Context) {
+				err = network_utils.ProxyNetwork.GetProxyNetwork()
+				if err != nil {
+					g.Dump(err)
+				}
+			}, "获取代理速度")
+			if err != nil {
+				panic(err)
+			}
+			/*g.Dump("开始获取家庭路由器网速")
+			_, err = gcron.AddSingleton(ctx, "* * * * * *", func(ctx context.Context) {
+				err = network_utils.NetworkUtils.GetHomeNetwork()
+				if err != nil {
+					g.Dump(err)
+				}
+			}, "获取家庭路由器速度")
+			if err != nil {
+				panic(err)
+			}*/
+			g.Dump("开始获取当前代理节点信息")
+			_, err = gcron.AddSingleton(ctx, "*/5 * * * * *", func(ctx context.Context) {
+				err = network_utils.NodeUtils.GetNodeInfo()
+				if err != nil {
+					g.Dump(err)
+				}
+			}, "获取当前代理节点信息")
+			if err != nil {
+				panic(err)
+			}
+			g.Dump("开始推送科学上网网速")
+			_, err = gcron.AddSingleton(ctx, "*/2 * * * * *", func(ctx context.Context) {
+				err = push_utils.PushUtils.ProxyPushCore(ctx)
+				if err != nil {
+					g.Dump(err)
+				}
+			}, "推送科学上网速度")
+			if err != nil {
+				panic(err)
+			}
 			s.Run()
 			return nil
 		},
