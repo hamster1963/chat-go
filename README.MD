@@ -1,4 +1,4 @@
-# GoFrame Template For SingleRepo
+# 家庭网络信息采集后端
 
 Project Makefile Commands: 
 - `make cli`: Install or Update to the latest GoFrame CLI tool.
