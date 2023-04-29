@@ -146,7 +146,7 @@ func (u uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 				return err
 			}
 			// 获取用户当前流量存入缓存
-			err = gcache.Set(ctx, "proxyUserFlow", userList, 10*time.Second)
+			err = gcache.Set(ctx, "proxyUserFlow", userList, 20*time.Second)
 			if err != nil {
 				return err
 			}
@@ -154,18 +154,20 @@ func (u uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 		}
 		countInt := count.Int()
 		g.Dump("当前超出次数" + gconv.String(countInt))
-		if countInt > 3 {
+		if countInt > 6 {
 			// 清空缓存
 			_, _ = gcache.Remove(ctx, "proxyNetworkUpSpeedCount")
 			_, _ = gcache.Remove(ctx, "proxyUserFlow")
 		}
-		if countInt == 3 {
+		if countInt == 6 {
 			var maxFLow int
 			var maxFLowUser string
-			time.Sleep(8 * time.Second)
 			// 计算用户流量变化
 			// 获取缓存中的用户流量
 			userList, _ := gcache.Get(ctx, "proxyUserFlow")
+			if userList == nil {
+				g.Dump("用户流量为空")
+			}
 			if userList != nil {
 				// 获取当前用户流量
 				userListNow, err := u.GetProxyUser()
