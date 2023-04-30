@@ -26,10 +26,10 @@ jobs:
         run: docker build -t $IMAGE_NAME:${{ github.sha }} .
 
       - name: Tag Docker image
-        run: docker tag $IMAGE_NAME:${{ github.sha }} $IMAGE_NAME:${{ github.ref##*/ }}
+        run: docker tag $IMAGE_NAME:${{ github.sha }} $IMAGE_NAME:${{ github.ref }}
 
       - name: Tag Docker image as latest
         run: docker tag $IMAGE_NAME:${{ github.sha }} $IMAGE_NAME:latest
 
       - name: Push Docker image
-        run: docker push $IMAGE_NAME:${{ github.ref }##*/}}
+        run: docker push $IMAGE_NAME:${{ github.ref }}
