@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 env:
-  IMAGE_NAME: hamster1963/nasnetwork_push_go
+  IMAGE_NAME: ${{ secrets.DOCKER_IMAGE_NAME }}
 
 jobs:
   build-and-push:
