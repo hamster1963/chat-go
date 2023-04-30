@@ -1,47 +1,35 @@
-name: golang-pipeline
-on: push
+name: Build and push Docker image
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  IMAGE_NAME: hamster1963/nasnetwork_push_go
+
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags')
+
     steps:
-      - name: Extract Version
-        id: version_step
-        run: |
-          echo "##[set-output name=version;]VERSION=${GITHUB_REF#$"refs/tags/v"}"
-          echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:${GITHUB_REF#$"refs/tags/v"}"
-          echo "##[set-output name=latest_tag;]$GITHUB_REPOSITORY:latest"
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Print Version
-        run: |
-          echo ${{steps.version_step.outputs.version_tag}}
-          echo ${{steps.version_step.outputs.latest_tag}}
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to DockerHub
+      - name: Login to Dockerhub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: PrepareReg Names
-        id: read-docker-image-identifiers
-        run: |
-          echo VERSION_TAG=$(echo ${{ steps.version_step.outputs.version_tag }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-          echo LASTEST_TAG=$(echo ${{ steps.version_step.outputs.latest_tag  }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+      - name: Build Docker image
+        run: docker build -t $IMAGE_NAME:${{ github.sha }} .
 
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: |
-            ${{env.VERSION_TAG}}
-            ${{env.LASTEST_TAG}}
-          build-args: |
-            ${{steps.version_step.outputs.version}}
+      - name: Tag Docker image
+        run: docker tag $IMAGE_NAME:${{ github.sha }} $IMAGE_NAME:${{ github.ref }##*/}}
+
+      - name: Tag Docker image as latest
+        run: docker tag $IMAGE_NAME:${{ github.sha }} $IMAGE_NAME:latest
+
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME:${{ github.ref }##*/}}
