@@ -174,7 +174,6 @@ func (u *uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 				if err != nil {
 					g.Dump(err)
 				}
-				g.Dump(userListNow)
 				// 计算用户流量变化
 				for _, user := range userList.Array() {
 					userMap := gconv.Map(user)
@@ -183,7 +182,6 @@ func (u *uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 						if userMap["id"] == userNowMap["id"] {
 							// 计算用户流量变化
 							totalFlow := gconv.Int(userNowMap["down"])/1024/1024 - gconv.Int(userMap["down"])/1024/1024
-							g.Dump(totalFlow)
 							if totalFlow >= maxFLow {
 								maxFLow = totalFlow
 								maxFLowUser = gconv.String(userNowMap["remark"])
@@ -197,7 +195,7 @@ func (u *uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 			if err != nil {
 				g.Dump(err)
 			}
-			g.Dump("推送成功")
+			g.Dump("------推送成功------")
 			// 清空缓存
 			_, err = gcache.Remove(ctx, "proxyNetworkUpSpeedCount")
 			_, err = gcache.Remove(ctx, "proxyUserFlow")
