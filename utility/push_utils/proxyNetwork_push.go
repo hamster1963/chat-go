@@ -22,7 +22,7 @@ var PushUtils = &uPushUtils{}
 //	@params:
 //	@response:
 //	@author: laixin   @date:2023/4/19 18:47:05
-func (u uPushUtils) GetProxyNetwork() (proxyNetworkUp string, err error) {
+func (u *uPushUtils) GetProxyNetwork() (proxyNetworkUp string, err error) {
 	proxyData, err := gcache.Get(context.Background(), "proxyNetwork")
 	if err != nil {
 		g.Dump(err)
@@ -38,7 +38,7 @@ func (u uPushUtils) GetProxyNetwork() (proxyNetworkUp string, err error) {
 //	@params:
 //	@response:
 //	@author: laixin   @date:2023/4/19 18:47:47
-func (u uPushUtils) PushToBark(proxyNetworkUp, maxFlowUser string, maxFlow int) (err error) {
+func (u *uPushUtils) PushToBark(proxyNetworkUp, maxFlowUser string, maxFlow int) (err error) {
 	url := "http://120.24.211.49:10399/PushCore"
 	pushClient := g.Client()
 	pushClient.SetHeader("Push-Sign", "ProxyNetwork_Push")
@@ -72,7 +72,7 @@ func (u uPushUtils) PushToBark(proxyNetworkUp, maxFlowUser string, maxFlow int) 
 //	@params:
 //	@response:
 //	@author: laixin   @date:2023/4/23 17:57:52
-func (u uPushUtils) GetProxyUser() (userList []interface{}, err error) {
+func (u *uPushUtils) GetProxyUser() (userList []interface{}, err error) {
 	// 尝试获取缓存中的session
 	session, err := gcache.Get(context.Background(), "proxySession")
 	if err != nil {
@@ -116,7 +116,7 @@ func (u uPushUtils) GetProxyUser() (userList []interface{}, err error) {
 //	@params:
 //	@response:
 //	@author: laixin   @date:2023/4/19 18:48:13
-func (u uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
+func (u *uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 	// 获取科学上网速度
 	proxyNetworkUp, err := u.GetProxyNetwork()
 	if err != nil {
