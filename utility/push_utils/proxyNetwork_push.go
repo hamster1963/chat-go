@@ -135,7 +135,7 @@ func (u uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 			return err
 		}
 		if count == nil {
-			err := gcache.Set(ctx, "proxyNetworkUpSpeedCount", 1, 10*time.Second)
+			err := gcache.Set(ctx, "proxyNetworkUpSpeedCount", 1, 20*time.Second)
 			if err != nil {
 				return err
 			}
@@ -146,7 +146,7 @@ func (u uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 				return err
 			}
 			// 获取用户当前流量存入缓存
-			err = gcache.Set(ctx, "proxyUserFlow", userList, 20*time.Second)
+			err = gcache.Set(ctx, "proxyUserFlow", userList, 0)
 			if err != nil {
 				return err
 			}
