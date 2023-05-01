@@ -5,15 +5,27 @@ import (
 	"fmt"
 	"github.com/gogf/gf/v2/encoding/gjson"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/net/gclient"
 	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/hamster1963/360-router-data-retriever/configs"
+	"github.com/hamster1963/360-router-data-retriever/router"
 )
 
-type uNetworkUtils struct{}
+type uNetworkUtils struct {
+}
 
 var NetworkUtils = &uNetworkUtils{}
+
+var routerMain router.SRouterController
+var routerConfig = &configs.RouterConfig{
+	RouterIP:       "router.xinyu.today:580",
+	RouterAddress:  "http://router.xinyu.today:580",
+	RouterPassword: "deny1963",
+}
+var myRouter = router.Router{
+	RouterConfig: routerConfig,
+}
 
 // GetHomeNetwork
 //
@@ -29,22 +41,34 @@ func (u uNetworkUtils) GetHomeNetwork() (err error) {
 		"rxSpeedMbps": 0,
 		"txSpeedMbps": 0,
 	}
-
-	url := "http://120.24.211.49:35600/json/stats.json"
-	response, err := g.Client().Get(context.Background(), url)
-	defer func(response *gclient.Response) {
-		err := response.Close()
+	routerMain = &myRouter
+	// 检测登陆状态
+	if login, err := routerMain.CheckLogin(); err != nil || login == false {
+		err := routerMain.GetRandomString()
 		if err != nil {
 			g.Dump(err)
+			return err
 		}
-	}(response)
+		err = routerMain.GenerateAesString()
+		if err != nil {
+			g.Dump(err)
+			return err
+		}
+		err = routerMain.Login()
+		if err != nil {
+			g.Dump(err)
+			return err
+		}
+	}
+	routerSpeedInfo, err := routerMain.GetRouterSpeed()
 	if err != nil {
 		g.Dump(err)
 		return err
 	}
-	jsonData := gjson.New(response.ReadAllString())
-	rxSpeed := jsonData.Get("servers.0.network_rx") // 下载速度
-	txSpeed := jsonData.Get("servers.0.network_tx") // 上传速度
+
+	jsonData := gjson.New(routerSpeedInfo)
+	rxSpeed := jsonData.Get("data.down_speed") // 下载速度
+	txSpeed := jsonData.Get("data.up_speed")   // 上传速度
 
 	// 速度单位转换
 	rxSpeedKbps := gconv.Float64(fmt.Sprintf("%.2f", gconv.Float64(rxSpeed)/1024))
@@ -59,6 +83,7 @@ func (u uNetworkUtils) GetHomeNetwork() (err error) {
 	homeNetwork["txSpeedMbps"] = txSpeedMbps
 
 	homeNetwork["time"] = gtime.Now().String()
+
 	err = gcache.Set(context.Background(), "homeNetwork", homeNetwork, 0)
 	if err != nil {
 		return err
