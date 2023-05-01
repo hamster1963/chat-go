@@ -17,15 +17,17 @@ type uNetworkUtils struct {
 
 var NetworkUtils = &uNetworkUtils{}
 
-var routerMain router.SRouterController
-var routerConfig = &configs.RouterConfig{
-	RouterIP:       "router.xinyu.today:580",
-	RouterAddress:  "http://router.xinyu.today:580",
-	RouterPassword: "deny1963",
-}
-var myRouter = router.Router{
-	RouterConfig: routerConfig,
-}
+var (
+	routerMain   router.SRouterController
+	routerConfig = &configs.RouterConfig{
+		RouterIP:       "router.xinyu.today:580",
+		RouterAddress:  "http://router.xinyu.today:580",
+		RouterPassword: "deny1963",
+	}
+	myRouter = router.Router{
+		RouterConfig: routerConfig,
+	}
+)
 
 // GetHomeNetwork
 //
