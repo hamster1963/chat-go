@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/gconv"
-	"github.com/hamster1963/360-router-data-retriever/configs"
-	"github.com/hamster1963/360-router-data-retriever/router"
+	"github.com/hamster1963/360-router-data-retriever/rconfig"
+	"github.com/hamster1963/360-router-data-retriever/rutils"
 )
 
 type uNetworkUtils struct {
@@ -18,15 +18,13 @@ type uNetworkUtils struct {
 var NetworkUtils = &uNetworkUtils{}
 
 var (
-	routerMain   router.SRouterController
-	routerConfig = &configs.RouterConfig{
+	routerMain   rutils.SRouterController
+	routerConfig = &rconfig.RouterConfig{
 		RouterIP:       "router.xinyu.today:580",
 		RouterAddress:  "http://router.xinyu.today:580",
 		RouterPassword: "deny1963",
 	}
-	myRouter = router.Router{
-		RouterConfig: routerConfig,
-	}
+	myRouter = new(rutils.Router).NewRouter(routerConfig)
 )
 
 // GetHomeNetwork
@@ -43,7 +41,7 @@ func (u uNetworkUtils) GetHomeNetwork() (err error) {
 		"rxSpeedMbps": 0,
 		"txSpeedMbps": 0,
 	}
-	routerMain = &myRouter
+	routerMain = myRouter
 	// 检测登陆状态
 	if login, err := routerMain.CheckLogin(); err != nil || login == false {
 		err := routerMain.GetRandomString()
