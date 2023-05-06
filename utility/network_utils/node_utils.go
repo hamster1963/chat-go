@@ -67,9 +67,20 @@ func (u uNodeUtils) GetNodeInfo() (err error) {
 		} else {
 			if gjson.New(connectedNode).Get("delay").Int() > gjson.New(gconv.String(v)).Get("delay").Int() {
 				connectedNode = gconv.String(v)
-				lastChangeTime = gtime.Now().String()
+				// lastChangeTime = gtime.Now().String()
 			}
 		}
+	}
+	// 比对缓存中的节点信息
+	cacheNodeInfo, _ := gcache.Get(context.Background(), "nodeInfo")
+	if cacheNodeInfo != nil {
+		if gjson.New(cacheNodeInfo.String()).Get("nodeName").String() == gjson.New(connectedNode).Get("outbound_tag").String() {
+			lastChangeTime = gjson.New(cacheNodeInfo).Get("lastChangeTime").String()
+		} else {
+			lastChangeTime = gtime.Now().String()
+		}
+	} else {
+		lastChangeTime = gtime.Now().String()
 	}
 	// 获取节点信息
 	nodeInfo["nodeName"] = gjson.New(connectedNode).Get("outbound_tag").String()
