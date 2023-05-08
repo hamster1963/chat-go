@@ -16,7 +16,7 @@ server:
   logStdout: true                       # 日志输出到终端
   accessLogEnabled: true                # 是否记录访问日志
   accessLogPattern: "access.{Ymd}.log"  # 访问日志文件
-  errorStack: false                     # 是否记录错误堆栈信息
+  errorStack: true                     # 是否记录错误堆栈信息
   errorLogEnabled: true                 # 是否记录错误日志
   errorLogPattern: "error.{Ymd}.log"    # 错误日志文件
 
