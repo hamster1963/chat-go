@@ -126,6 +126,7 @@ func (u *uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 	// 进行10s内超过速率限制次数判断
 	// 速率限制
 	speedLimit := "6"
+	limitTime := 10
 	if proxyNetworkUpSpeed > gconv.Float64(speedLimit) {
 		g.Dump("速率超过限制" + proxyNetworkUp)
 		// 速率超过限制
@@ -154,12 +155,12 @@ func (u *uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 		}
 		countInt := count.Int()
 		g.Dump("当前超出次数" + gconv.String(countInt))
-		if countInt > 6 {
+		if countInt > limitTime {
 			// 清空缓存
 			_, _ = gcache.Remove(ctx, "proxyNetworkUpSpeedCount")
 			_, _ = gcache.Remove(ctx, "proxyUserFlow")
 		}
-		if countInt == 6 {
+		if countInt == limitTime {
 			var maxFLow int
 			var maxFLowUser string
 			// 计算用户流量变化

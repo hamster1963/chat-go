@@ -66,7 +66,7 @@ var (
 			}
 
 			g.Dump("开始推送科学上网网速")
-			_, err = gcron.AddSingleton(ctx, "*/2 * * * * *", func(ctx context.Context) {
+			_, err = gcron.AddSingleton(ctx, "* * * * * *", func(ctx context.Context) {
 				err = push_utils.PushUtils.ProxyPushCore(ctx)
 				if err != nil {
 					g.Dump(err)
