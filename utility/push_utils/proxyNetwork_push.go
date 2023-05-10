@@ -73,21 +73,29 @@ func (u *uPushUtils) PushToBark(proxyNetworkUp, maxFlowUser string, maxFlow int)
 //	@response:
 //	@author: laixin   @date:2023/4/23 17:57:52
 func (u *uPushUtils) GetProxyUser() (userList []interface{}, err error) {
+	var (
+		session map[string]string
+	)
+
 	// 尝试获取缓存中的session
-	session, err := gcache.Get(context.Background(), "proxySession")
+	sessionData, err := gcache.Get(context.Background(), "proxySession")
 	if err != nil {
-		return
+		return nil, err
 	}
-	if session == nil {
+
+	if sessionData == nil {
 		// 获取session
-		_, err := network_utils.ProxyNetwork.GetSession()
+		session, err = network_utils.ProxyNetwork.GetSession()
 		if err != nil {
 			return nil, err
 		}
+	} else {
+		session = sessionData.MapStrStr()
 	}
+
 	// 获取代理占用用户
 	url := "http://xui.xinyu.today:580/xui/inbound/list"
-	post, err := g.Client().SetCookieMap(session.MapStrStr()).Post(context.Background(), url)
+	post, err := g.Client().SetCookieMap(session).Post(context.Background(), url)
 	defer func(post *gclient.Response) {
 		err := post.Close()
 		if err != nil {

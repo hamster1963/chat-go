@@ -33,7 +33,7 @@ var (
 			})
 
 			g.Dump("开始获取科学上网网速")
-			_, err = gcron.AddSingleton(ctx, "* * * * * *", func(ctx context.Context) {
+			_, err = gcron.AddSingleton(ctx, "@every 1s", func(ctx context.Context) {
 				err = network_utils.ProxyNetwork.GetProxyNetwork()
 				if err != nil {
 					g.Dump(err)
@@ -44,7 +44,7 @@ var (
 			}
 
 			g.Dump("开始获取家庭路由器网速")
-			_, err = gcron.AddSingleton(ctx, "* * * * * *", func(ctx context.Context) {
+			_, err = gcron.AddSingleton(ctx, "@every 1s", func(ctx context.Context) {
 				err = network_utils.NetworkUtils.GetHomeNetwork()
 				if err != nil {
 					g.Dump(err)
@@ -55,7 +55,7 @@ var (
 			}
 
 			g.Dump("开始获取当前代理节点信息")
-			_, err = gcron.AddSingleton(ctx, "*/5 * * * * *", func(ctx context.Context) {
+			_, err = gcron.AddSingleton(ctx, "@every 5s", func(ctx context.Context) {
 				err = network_utils.NodeUtils.GetNodeInfo()
 				if err != nil {
 					g.Dump(err)
@@ -66,12 +66,37 @@ var (
 			}
 
 			g.Dump("开始推送科学上网网速")
-			_, err = gcron.AddSingleton(ctx, "* * * * * *", func(ctx context.Context) {
+			_, err = gcron.AddSingleton(ctx, "@every 1s", func(ctx context.Context) {
 				err = push_utils.PushUtils.ProxyPushCore(ctx)
 				if err != nil {
 					g.Dump(err)
 				}
 			}, "推送科学上网速度")
+			if err != nil {
+				panic(err)
+			}
+
+			g.Dump("开始存储出站流量")
+			_, err = gcron.AddSingleton(ctx, "@midnight", func(ctx context.Context) {
+				err = push_utils.PushUtils.StoreOutbound()
+				if err != nil {
+					g.Dump(err)
+				}
+			}, "存储出站流量")
+			if err != nil {
+				panic(err)
+			}
+			err = push_utils.PushUtils.StoreOutbound()
+			if err != nil {
+				panic(err)
+			}
+			g.Dump("开始推送出站流量")
+			_, err = gcron.AddSingleton(ctx, "@every 6h", func(ctx context.Context) {
+				err = push_utils.PushUtils.GetUsedOutboundAndPush()
+				if err != nil {
+					g.Dump(err)
+				}
+			}, "推送出站流量")
 			if err != nil {
 				panic(err)
 			}
