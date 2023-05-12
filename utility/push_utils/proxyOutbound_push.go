@@ -34,7 +34,7 @@ func (u *uPushUtils) GetTotalOutbound() (outBoundStr string, err error) {
 	}
 	// byte -> G
 	outBoundG := totalOutbound / consts.ByteToG
-	outBoundStr = fmt.Sprintf("%.2f\n", outBoundG)
+	outBoundStr = fmt.Sprintf("%.3f", outBoundG)
 	return
 }
 
@@ -73,24 +73,12 @@ func (u *uPushUtils) GetUsedOutboundAndPush() (err error) {
 			err = fmt.Errorf("outBoundData is not map")
 			return err
 		}
-	} else {
-		proxyUserList, err := PushUtils.GetProxyUser()
-		if err != nil {
-			return err
-		}
-		// g.Dump(proxyUserList)
-		var totalOutbound float64
-		// 计算全部用户的出口流量
-		for _, user := range proxyUserList {
-			userMap := gconv.Map(user)
-			totalOutbound += gconv.Float64(userMap["up"]) + gconv.Float64(userMap["down"])
-		}
-		// byte -> G
-		outBoundG := totalOutbound / consts.ByteToG
-		outBoundStr := fmt.Sprintf("%.2f\n", outBoundG)
+	} else if !outBoundData.IsEmpty() {
+		outBoundStr, err := u.GetTotalOutbound()
 		outBoundMap := outBoundData.MapStrStr()
+		g.Dump(outBoundMap)
 		duringTime := gtime.NewFromStr(gtime.Now().String()).Sub(gtime.NewFromStr(outBoundMap["time"]))
-		usedOutBound := gconv.String(gconv.Float64(outBoundStr) - gconv.Float64(outBoundMap["outBound"]))
+		usedOutBound := fmt.Sprintf("%.2f", gconv.Float64(outBoundStr)-gconv.Float64(outBoundMap["outBound"]))
 		g.Dump("过去" + duringTime.String() + "的出口流量为：" + usedOutBound + "GB")
 		// 推送到Bark
 		err = PushUtils.PushOutboundToBark(usedOutBound, duringTime.String())
