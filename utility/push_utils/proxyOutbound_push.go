@@ -96,7 +96,7 @@ func (u *uPushUtils) GetUsedOutboundAndPush() (err error) {
 //	@response:
 //	@author: laixin   @date:2023/5/11 02:37:19
 func (u *uPushUtils) PushOutboundToBark(usedOutBound, duringTime string) (err error) {
-	url := "http://120.24.211.49:30001/PushCore"
+	url := "http://120.24.211.49:10399/PushCore"
 	pushClient := g.Client()
 	pushClient.SetHeader("Push-Sign", "ProxyOutbound_Push")
 	// 设置为json

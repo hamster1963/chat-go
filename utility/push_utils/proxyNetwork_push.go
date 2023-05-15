@@ -39,7 +39,7 @@ func (u *uPushUtils) GetProxyNetwork() (proxyNetworkUp string, err error) {
 //	@response:
 //	@author: laixin   @date:2023/4/19 18:47:47
 func (u *uPushUtils) PushToBark(proxyNetworkUp, maxFlowUser string, maxFlow int) (err error) {
-	url := "http://120.24.211.49:30001/PushCore"
+	url := "http://120.24.211.49:10399/PushCore"
 	pushClient := g.Client()
 	pushClient.SetHeader("Push-Sign", "ProxyNetwork_Push")
 	// 设置为json
