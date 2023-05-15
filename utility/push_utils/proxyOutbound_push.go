@@ -67,7 +67,6 @@ func (u *uPushUtils) StoreOutbound() (err error) {
 func (u *uPushUtils) GetUsedOutboundAndPush() (err error) {
 	if outBoundData, err := gcache.Get(context.Background(), "outBoundInfo"); !outBoundData.IsMap() || err != nil {
 		if err != nil {
-			g.Dump(err)
 			return err
 		} else {
 			err = fmt.Errorf("outBoundData is not map")
@@ -76,10 +75,8 @@ func (u *uPushUtils) GetUsedOutboundAndPush() (err error) {
 	} else if !outBoundData.IsEmpty() {
 		outBoundStr, err := u.GetTotalOutbound()
 		outBoundMap := outBoundData.MapStrStr()
-		g.Dump(outBoundMap)
 		duringTime := gtime.NewFromStr(gtime.Now().String()).Sub(gtime.NewFromStr(outBoundMap["time"]))
 		usedOutBound := fmt.Sprintf("%.2f", gconv.Float64(outBoundStr)-gconv.Float64(outBoundMap["outBound"]))
-		g.Dump("过去" + duringTime.String() + "的出口流量为：" + usedOutBound + "GB")
 		// 推送到Bark
 		err = PushUtils.PushOutboundToBark(usedOutBound, duringTime.String())
 		if err != nil {
@@ -115,7 +112,6 @@ func (u *uPushUtils) PushOutboundToBark(usedOutBound, duringTime string) (err er
 		return err
 	}
 	if response.StatusCode != 200 {
-		g.Dump(response.ReadAllString())
 		err := gerror.New("推送失败")
 		return err
 	}

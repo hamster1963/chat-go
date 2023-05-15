@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/gclient"
 	"github.com/gogf/gf/v2/os/gcache"
+	"github.com/gogf/gf/v2/os/glog"
 	"github.com/gogf/gf/v2/util/gconv"
 	"push/utility/network_utils"
 	"time"
@@ -136,7 +137,7 @@ func (u *uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 	speedLimit := "6"
 	limitTime := 10
 	if proxyNetworkUpSpeed > gconv.Float64(speedLimit) {
-		g.Dump("速率超过限制" + proxyNetworkUp)
+		glog.Info(context.Background(), "速率超过限制"+proxyNetworkUp)
 		// 速率超过限制
 		// 获取缓存中的速率超过限制次数
 		count, err := gcache.Get(ctx, "proxyNetworkUpSpeedCount")
@@ -151,7 +152,6 @@ func (u *uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 			// 获取占用用户
 			userList, err := u.GetProxyUser()
 			if err != nil {
-				g.Dump(err)
 				return err
 			}
 			// 获取用户当前流量存入缓存
@@ -162,7 +162,7 @@ func (u *uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 			return nil
 		}
 		countInt := count.Int()
-		g.Dump("当前超出次数" + gconv.String(countInt))
+		glog.Info(context.Background(), "当前超出次数"+gconv.String(countInt))
 		if countInt > limitTime {
 			// 清空缓存
 			_, _ = gcache.Remove(ctx, "proxyNetworkUpSpeedCount")
@@ -175,13 +175,13 @@ func (u *uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 			// 获取缓存中的用户流量
 			userList, _ := gcache.Get(ctx, "proxyUserFlow")
 			if userList == nil {
-				g.Dump("用户流量为空")
+				glog.Warning(context.Background(), "未成功获取到用户流量")
 			}
 			if userList != nil {
 				// 获取当前用户流量
 				userListNow, err := u.GetProxyUser()
 				if err != nil {
-					g.Dump(err)
+					glog.Warning(context.Background(), err)
 				}
 				// 计算用户流量变化
 				for _, user := range userList.Array() {
@@ -204,12 +204,12 @@ func (u *uPushUtils) ProxyPushCore(ctx context.Context) (err error) {
 			if err != nil {
 				g.Dump(err)
 			}
-			g.Dump("------推送成功------")
+			glog.Notice(ctx, "------推送成功------")
 			// 清空缓存
 			_, err = gcache.Remove(ctx, "proxyNetworkUpSpeedCount")
 			_, err = gcache.Remove(ctx, "proxyUserFlow")
 			if err != nil {
-				g.Dump(err)
+				glog.Warning(ctx, err)
 			}
 		} else {
 			// 速率超过限制次数+1

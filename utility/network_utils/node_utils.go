@@ -48,7 +48,6 @@ func (u uNodeUtils) GetNodeInfo() (err error) {
 	client.TLSClientConfig = &tls.Config{}   // 设置 tls 配置
 	conn, _, err := client.Dial(wsUrl, nil)
 	if err != nil {
-		g.Dump(err)
 		return err
 	}
 	_, data, err := conn.ReadMessage()

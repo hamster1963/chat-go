@@ -46,23 +46,19 @@ func (u uNetworkUtils) GetHomeNetwork() (err error) {
 	if login, err := routerMain.CheckLogin(); err != nil || login == false {
 		err := routerMain.GetRandomString()
 		if err != nil {
-			g.Dump(err)
 			return err
 		}
 		err = routerMain.GenerateAesString()
 		if err != nil {
-			g.Dump(err)
 			return err
 		}
 		err = routerMain.Login()
 		if err != nil {
-			g.Dump(err)
 			return err
 		}
 	}
 	routerSpeedInfo, err := routerMain.GetRouterSpeed()
 	if err != nil {
-		g.Dump(err)
 		return err
 	}
 

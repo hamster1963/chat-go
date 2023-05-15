@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/gclient"
 	"github.com/gogf/gf/v2/os/gcache"
+	"github.com/gogf/gf/v2/os/glog"
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/gconv"
 	"time"
@@ -37,16 +38,14 @@ func (u uProxyNetwork) GetProxyNetwork() (err error) {
 	defer func(post *gclient.Response) {
 		err := post.Close()
 		if err != nil {
-			g.Dump(err)
+			glog.Warning(context.Background(), err)
 		}
 	}(post)
 	if err != nil {
-		g.Dump(err)
 		return err
 	}
 	if post.StatusCode != 200 {
-		g.Dump("获取网速失败")
-		g.Dump(post.ReadAllString())
+		glog.Warning(context.Background(), "获取网速失败")
 		return err
 	}
 	jsonData := gjson.New(post.ReadAllString())
@@ -83,7 +82,7 @@ func (u uProxyNetwork) GetSession() (sessionMap map[string]string, err error) {
 	defer func(post *gclient.Response) {
 		err := post.Close()
 		if err != nil {
-			g.Dump(err)
+			glog.Warning(context.Background(), err)
 		}
 	}(post)
 	if err != nil {
@@ -98,7 +97,6 @@ func (u uProxyNetwork) GetSession() (sessionMap map[string]string, err error) {
 	// 将session存入缓存
 	err = gcache.Set(context.Background(), "proxySession", post.GetCookieMap(), 15*time.Minute)
 	if err != nil {
-		g.Dump(err)
 		return nil, err
 	}
 	return post.GetCookieMap(), nil
