@@ -18,13 +18,13 @@ type uNetworkUtils struct {
 var NetworkUtils = &uNetworkUtils{}
 
 var (
-	routerMain   rutils.SRouterController
 	routerConfig = &rconfig.RouterConfig{
 		RouterIP:       "router.xinyu.today:580",
 		RouterAddress:  "http://router.xinyu.today:580",
 		RouterPassword: "deny1963",
 	}
-	myRouter = new(rutils.Router).NewRouter(routerConfig)
+	myRouter   *rutils.Router           = new(rutils.Router).NewRouter(routerConfig)
+	routerMain rutils.SRouterController = myRouter
 )
 
 // GetHomeNetwork
@@ -41,7 +41,6 @@ func (u uNetworkUtils) GetHomeNetwork() (err error) {
 		"rxSpeedMbps": 0,
 		"txSpeedMbps": 0,
 	}
-	routerMain = myRouter
 	// 检测登陆状态
 	if login, err := routerMain.CheckLogin(); err != nil || login == false {
 		err := routerMain.GetRandomString()

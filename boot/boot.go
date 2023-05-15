@@ -10,6 +10,7 @@ import (
 
 func Boot() (err error) {
 	var ctx = context.TODO()
+
 	glog.Notice(ctx, "开始获取科学上网网速")
 	_, err = gcron.AddSingleton(ctx, "@every 1s", func(ctx context.Context) {
 		err = network_utils.ProxyNetwork.GetProxyNetwork()
