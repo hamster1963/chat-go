@@ -39,10 +39,3 @@ jobs:
         run: |
             docker push $IMAGE_NAME:${{ steps.get_version.outputs.VERSION }}
             docker push $IMAGE_NAME:latest
-      - name: Update k3s deployment
-        run: |
-          curl -X PUT \
-          -H "content-type: application/json" \
-          -H "Cookie: KuboardUsername=admin; KuboardAccessKey=6ezinf77jsc8.2ti83pw52p7zi8w5ffibkx88z2pre3a5" \
-          -d '{"kind":"deployments","namespace":"hamster","name":"home-net","images":{"hamster1963/nasnetwork_push_go":"hamster1963/nasnetwork_push_go:${{ steps.get_version.outputs.VERSION }}"}}' \
-          "http://110.40.156.134:8075/kuboard-api/cluster/huawei/kind/CICDApi/admin/resource/updateImageTag"
