@@ -32,7 +32,7 @@ var (
 			})
 
 			if err := boot.Boot(); err != nil {
-				glog.Fatal(context.Background(), "boot failed: ", err)
+				glog.Fatal(context.Background(), "定时任务启动失败: ", err)
 			}
 			glog.Debug(context.Background(), "定时任务启动成功")
 
