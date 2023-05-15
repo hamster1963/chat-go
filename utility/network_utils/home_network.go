@@ -23,8 +23,7 @@ var (
 		RouterAddress:  "http://router.xinyu.today:580",
 		RouterPassword: "deny1963",
 	}
-	myRouter   *rutils.Router           = new(rutils.Router).NewRouter(routerConfig)
-	routerMain rutils.SRouterController = myRouter
+	routerMain rutils.SRouterController = rutils.NewRouter().InitRouter(routerConfig)
 )
 
 // GetHomeNetwork
