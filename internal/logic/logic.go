@@ -5,5 +5,5 @@
 package logic
 
 import (
-	_ "push/internal/logic/middleware"
+	_ "home-network-watcher/internal/logic/middleware"
 )

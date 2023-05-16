@@ -19,10 +19,10 @@ RUN echo "BUILD_GO_VERSION=${BUILD_GO_VERSION}"
 
 # 设置 LDFlags 变量
 ENV LDFLAGS=" \
-    -X 'push/utility/bin_utils.GitTag=${GIT_TAG}' \
-    -X 'push/utility/bin_utils.GitCommitLog=${GIT_COMMIT_LOG}' \
-    -X 'push/utility/bin_utils.BuildTime=${BUILD_TIME}' \
-    -X 'push/utility/bin_utils.BuildGoVersion=${BUILD_GO_VERSION}' \
+    -X 'home-network-watcher/utility/bin_utils.GitTag=${GIT_TAG}' \
+    -X 'home-network-watcher/utility/bin_utils.GitCommitLog=${GIT_COMMIT_LOG}' \
+    -X 'home-network-watcher/utility/bin_utils.BuildTime=${BUILD_TIME}' \
+    -X 'home-network-watcher/utility/bin_utils.BuildGoVersion=${BUILD_GO_VERSION}' \
 "
 
 RUN CGO_ENABLED=0 go build -o service -ldflags "$LDFLAGS" main.go

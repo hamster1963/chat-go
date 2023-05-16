@@ -3,7 +3,7 @@ package controller
 import (
 	"context"
 	"github.com/gogf/gf/v2/os/gcache"
-	v1 "push/api/v1"
+	v1 "home-network-watcher/api/v1"
 )
 
 type cDataCore struct{}

@@ -4,8 +4,8 @@ import (
 	"context"
 	"github.com/gogf/gf/v2/os/gcron"
 	"github.com/gogf/gf/v2/os/glog"
-	"push/utility/network_utils"
-	"push/utility/push_utils"
+	"home-network-watcher/utility/network_utils"
+	"home-network-watcher/utility/push_utils"
 )
 
 func Boot() (err error) {

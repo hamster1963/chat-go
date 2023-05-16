@@ -13,12 +13,12 @@ echo "GitCommitLog: ${GitCommitLog}"
 echo "BuildTime: ${BuildTime}"
 echo "BuildGoVersion: ${BuildGoVersion}"
 
-# # 将以上变量序列化至 LDFlags 变量中
-# LDFlags=" \
-#     -X 'push/utility/bin_utils.GitTag=${GitTag}' \
-#     -X 'push/utility/bin_utils.GitCommitLog=${GitCommitLog}' \
-#     -X 'push/utility/bin_utils.BuildTime=${BuildTime}' \
-#     -X 'push/utility/bin_utils.BuildGoVersion=${BuildGoVersion}' \
-# "
-#
-# go build -ldflags "$LDFlags" -o service
+# 将以上变量序列化至 LDFlags 变量中
+LDFlags=" \
+    -X 'home-network-watcher/utility/bin_utils.GitTag=${GitTag}' \
+    -X 'home-network-watcher/utility/bin_utils.GitCommitLog=${GitCommitLog}' \
+    -X 'home-network-watcher/utility/bin_utils.BuildTime=${BuildTime}' \
+    -X 'home-network-watcher/utility/bin_utils.BuildGoVersion=${BuildGoVersion}' \
+"
+
+go build -ldflags "$LDFlags" -o service

@@ -6,10 +6,10 @@ import (
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gcmd"
 	"github.com/gogf/gf/v2/os/glog"
-	"push/boot"
-	"push/internal/consts"
-	"push/internal/controller"
-	"push/internal/logic/middleware"
+	"home-network-watcher/boot"
+	"home-network-watcher/internal/consts"
+	"home-network-watcher/internal/controller"
+	"home-network-watcher/internal/logic/middleware"
 )
 
 var (
@@ -32,6 +32,7 @@ var (
 				// 接口绑定
 				group.Bind(
 					controller.DataCore,
+					controller.Version,
 				)
 			})
 			// 初始化

@@ -1,4 +1,4 @@
-module push
+module home-network-watcher
 
 go 1.20
 
