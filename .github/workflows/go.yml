@@ -23,7 +23,7 @@ jobs:
 
     - name: Get Git Commit Log
       id: git-commit-log
-      run: echo "GIT_COMMIT_LOG=${{ github.sha }}.${{ github.event.head_commit.message}}" >> $GITHUB_ENV
+      run: echo "GIT_COMMIT_LOG=${{ github.sha }}" >> $GITHUB_ENV
 
     - name: Get Build Time
       id: build-time
