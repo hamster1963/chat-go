@@ -1,10 +1,31 @@
 FROM golang:1.20-buster AS builder
 
-ARG VERSION=dev
+# 设置构建参数的默认值
+ARG GIT_TAG="unknown"
+ARG GIT_COMMIT_LOG="unknown"
+ARG BUILD_TIME="unknown"
+ARG BUILD_GO_VERSION="github@action golang:1.20-buster"
+
 
 WORKDIR /go/src/app
 COPY . .
-RUN CGO_ENABLED=0 go build -o service -ldflags=-X=main.version=${VERSION} main.go
+
+# 打印构建参数
+RUN echo "GIT_TAG=${GIT_TAG}"
+RUN echo "GIT_COMMIT_LOG=${GIT_COMMIT_LOG}"
+RUN echo "BUILD_TIME=${BUILD_TIME}"
+RUN echo "BUILD_GO_VERSION=${BUILD_GO_VERSION}"
+
+
+# 设置 LDFlags 变量
+ENV LDFLAGS=" \
+    -X 'push/utility/bin_utils.GitTag=${GIT_TAG}' \
+    -X 'push/utility/bin_utils.GitCommitLog=${GIT_COMMIT_LOG}' \
+    -X 'push/utility/bin_utils.BuildTime=${BUILD_TIME}' \
+    -X 'push/utility/bin_utils.BuildGoVersion=${BUILD_GO_VERSION}' \
+"
+
+RUN CGO_ENABLED=0 go build -o service -ldflags "$LDFLAGS" main.go
 
 FROM loads/alpine:3.8
 

@@ -16,6 +16,14 @@ jobs:
         id: get_version
         run: echo "CURRENT_VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
+      - name: Get Git Commit Log
+        id: git-commit-log
+        run: echo "GIT_COMMIT_LOG=$(git log --pretty=oneline -n 1)" >> $GITHUB_ENV
+
+      - name: Get Build Time
+        id: build-time
+        run: echo "BUILD_TIME=$(date +'%Y.%m.%d.%H:%M:%S')" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -26,7 +34,16 @@ jobs:
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t $IMAGE_NAME:${{ github.sha }} .
+        run: docker build \
+          --build-arg GIT_TAG=${{env.CURRENT_VERSION}} \
+          --build-arg GIT_COMMIT_LOG=${{env.GIT_COMMIT_LOG}} \
+          --build-arg BUILD_TIME=${{env.BUILD_TIME}} \
+          -t $IMAGE_NAME:${{ github.sha }} .
+      - name: Print environment variables
+        run: |
+          echo "${{env.GIT_COMMIT_LOG}}"
+          echo "${{env.BUILD_TIME}}"
+          echo "${{env.CURRENT_VERSION}}"
 
       - name: Tag Docker image
         run: docker tag $IMAGE_NAME:${{ github.sha }} $IMAGE_NAME:${{ env.CURRENT_VERSION }}
