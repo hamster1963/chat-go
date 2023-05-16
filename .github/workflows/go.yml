@@ -21,6 +21,25 @@ jobs:
       with:
         go-version: 1.19
 
+    - name: Get Git Commit Log
+      id: git-commit-log
+      run: echo "GIT_COMMIT_LOG=$(git log --pretty=oneline -n 1)" >> $GITHUB_ENV
+
+    - name: Get Git Status
+      id: git-status
+      run: echo "GIT_STATUS=$(git status --short)" >> $GITHUB_ENV
+
+    - name: Get Build Time
+      id: build-time
+      run: echo "BUILD_TIME=$(date +'%Y.%m.%d.%H:%M:%S')" >> $GITHUB_ENV
+
+    - name: Print Environment Variables
+      run: |
+        echo "${{env.GIT_COMMIT_LOG}}"
+        echo "${{env.GIT_STATUS}}"
+        echo "${{env.BUILD_TIME}}"
+
+
     - name: Build
       run: |
         go build -v ./...
