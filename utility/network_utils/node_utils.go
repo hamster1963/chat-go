@@ -24,7 +24,7 @@ var NodeUtils = &uNodeUtils{}
 //	@params:
 //	@response:
 //	@author: laixin   @date:2023/4/2 20:08:50
-func (u uNodeUtils) GetNodeInfo() (err error) {
+func (u *uNodeUtils) GetNodeInfo() (err error) {
 	var (
 		connectedNode  string
 		lastChangeTime string
@@ -66,7 +66,6 @@ func (u uNodeUtils) GetNodeInfo() (err error) {
 		} else {
 			if gjson.New(connectedNode).Get("delay").Int() > gjson.New(gconv.String(v)).Get("delay").Int() {
 				connectedNode = gconv.String(v)
-				// lastChangeTime = gtime.Now().String()
 			}
 		}
 	}
@@ -101,7 +100,7 @@ func (u uNodeUtils) GetNodeInfo() (err error) {
 //	@params:
 //	@response:
 //	@author: laixin   @date:2023/4/2 20:13:24
-func (u uNodeUtils) GetToken() (token string, err error) {
+func (u *uNodeUtils) GetToken() (token string, err error) {
 	// 登陆获取token
 	url := "http://ray.xinyu.today:580/api/login"
 	jsonData := `{"username":"hamster","password":"deny1963"}`

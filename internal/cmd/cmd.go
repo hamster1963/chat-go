@@ -7,7 +7,6 @@ import (
 	"github.com/gogf/gf/v2/os/gcmd"
 	"github.com/gogf/gf/v2/os/glog"
 	"push/boot"
-	"push/internal/consts"
 	"push/internal/controller"
 	"push/internal/logic/middleware"
 )
@@ -20,10 +19,10 @@ var (
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
 			s := g.Server()
 			s.SetNameToUriType(1) // 将路由中的下划线转换为驼峰命名
+			s.SetIndexFolder(true)
+			s.AddSearchPath("resource/public/html")
+			s.SetIndexFiles([]string{"index.html"})
 			s.Group("/", func(group *ghttp.RouterGroup) {
-				group.ALL("/", func(r *ghttp.Request) {
-					r.Response.Write(consts.Ui)
-				})
 				group.Middleware(middleware.MiddlewareCORS)
 				group.Middleware(middleware.HandlerResponse)
 				group.Bind(
@@ -32,10 +31,8 @@ var (
 			})
 
 			if err := boot.Boot(); err != nil {
-				glog.Fatal(context.Background(), "定时任务启动失败: ", err)
+				glog.Fatal(ctx, "初始化任务失败: ", err)
 			}
-			glog.Debug(context.Background(), "定时任务启动成功")
-
 			s.Run()
 			return nil
 		},

@@ -19,11 +19,11 @@ var ProxyNetwork = &uProxyNetwork{}
 
 // GetProxyNetwork
 //
-//	@dc:
+//	@dc: 获取代理服务器的网速
 //	@params:
 //	@response:
 //	@author: laixin   @date:2023/4/2 20:06:21
-func (u uProxyNetwork) GetProxyNetwork() (err error) {
+func (u *uProxyNetwork) GetProxyNetwork() (err error) {
 	proxyNetwork := g.Map{
 		"time":        "",
 		"rxSpeedKbps": 0,
@@ -73,7 +73,7 @@ func (u uProxyNetwork) GetProxyNetwork() (err error) {
 	return err
 }
 
-func (u uProxyNetwork) GetSession() (sessionMap map[string]string, err error) {
+func (u *uProxyNetwork) GetSession() (sessionMap map[string]string, err error) {
 	url := "http://xui.xinyu.today:580/login"
 	post, err := g.Client().Post(context.Background(), url, g.Map{
 		"username": "hamster",

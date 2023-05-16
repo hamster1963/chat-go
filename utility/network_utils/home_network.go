@@ -32,7 +32,7 @@ var (
 //	@params:
 //	@response:
 //	@author: laixin   @date:2023/4/2 19:43:13
-func (u uNetworkUtils) GetHomeNetwork() (err error) {
+func (u *uNetworkUtils) GetHomeNetwork() (err error) {
 	homeNetwork := g.Map{
 		"time":        "",
 		"rxSpeedKbps": 0,
