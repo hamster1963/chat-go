@@ -10,9 +10,15 @@ import (
 	"home-network-watcher/internal/consts"
 	"home-network-watcher/internal/controller"
 	"home-network-watcher/internal/logic/middleware"
+	binInfo "home-network-watcher/utility/bin_utils"
 )
 
 var (
+	VersionString = "GitTag:" + binInfo.GitTag + "\n" +
+		"GitCommitLog:" + binInfo.GitCommitLog + "\n" +
+		"GitStatus:" + binInfo.GitStatus + "\n" +
+		"BuildTime:" + binInfo.BuildTime + "\n" +
+		"BuildGoVersion:" + binInfo.BuildGoVersion + "\n"
 	Main = gcmd.Command{
 		Name:  "main",
 		Usage: "main",
@@ -26,13 +32,15 @@ var (
 				group.ALL("/", func(r *ghttp.Request) {
 					r.Response.Write(consts.IndexHTML)
 				})
+				group.ALL("/version", func(r *ghttp.Request) {
+					r.Response.Write(VersionString)
+				})
 				// 中间件
 				group.Middleware(middleware.MiddlewareCORS)
 				group.Middleware(middleware.HandlerResponse)
 				// 接口绑定
 				group.Bind(
 					controller.DataCore,
-					controller.Version,
 				)
 			})
 			// 初始化
