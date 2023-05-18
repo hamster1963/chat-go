@@ -18,6 +18,8 @@ type uNodeUtils struct{}
 
 var NodeUtils = &uNodeUtils{}
 
+var xuiBaseUrl = "ray.xinyu.today:580"
+
 // GetNodeInfo
 //
 //	@dc:
@@ -39,7 +41,7 @@ func (u *uNodeUtils) GetNodeInfo() (err error) {
 	if err != nil {
 		return err
 	}
-	wsUrl := "ws://ray.xinyu.today:580/api/message?Authorization=" + token
+	wsUrl := "ws://" + xuiBaseUrl + "/api/message?Authorization=" + token
 
 	// websocket获取节点列表
 	client := gclient.NewWebSocket()
@@ -102,7 +104,7 @@ func (u *uNodeUtils) GetNodeInfo() (err error) {
 //	@author: laixin   @date:2023/4/2 20:13:24
 func (u *uNodeUtils) GetToken() (token string, err error) {
 	// 登陆获取token
-	url := "http://ray.xinyu.today:580/api/login"
+	url := "http://" + xuiBaseUrl + "/api/login"
 	jsonData := `{"username":"hamster","password":"deny1963"}`
 	response, err := g.Client().Post(context.Background(), url, jsonData)
 	if err != nil {

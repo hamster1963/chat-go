@@ -14,11 +14,6 @@ import (
 )
 
 var (
-	VersionString = "GitTag:" + binInfo.GitTag + "\n" +
-		"GitCommitLog:" + binInfo.GitCommitLog + "\n" +
-		"GitStatus:" + binInfo.GitStatus + "\n" +
-		"BuildTime:" + binInfo.BuildTime + "\n" +
-		"BuildGoVersion:" + binInfo.BuildGoVersion + "\n"
 	Main = gcmd.Command{
 		Name:  "main",
 		Usage: "main",
@@ -33,7 +28,7 @@ var (
 					r.Response.Write(consts.IndexHTML)
 				})
 				group.ALL("/version", func(r *ghttp.Request) {
-					r.Response.Write(VersionString)
+					r.Response.Write(binInfo.VersionString)
 				})
 				// 中间件
 				group.Middleware(middleware.MiddlewareCORS)

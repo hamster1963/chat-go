@@ -1,8 +1,6 @@
 package binInfo
 
 import (
-	"fmt"
-	"runtime"
 	"strings"
 )
 
@@ -16,17 +14,25 @@ var (
 	BuildGoVersion = "unknown"
 )
 
-// StringifySingleLine 返回单行格式
+var (
+	VersionString = "GitTag:" + GitTag + "\n" +
+		"GitCommitLog:" + GitCommitLog + "\n" +
+		"GitStatus:" + GitStatus + "\n" +
+		"BuildTime:" + BuildTime + "\n" +
+		"BuildGoVersion:" + BuildGoVersion + "\n"
+)
+
+/*// StringifySingleLine 返回单行格式
 func StringifySingleLine() string {
 	return fmt.Sprintf("GitTag=%s. GitCommitLog=%s. GitStatus=%s. BuildTime=%s. GoVersion=%s. runtime=%s/%s.",
 		GitTag, GitCommitLog, GitStatus, BuildTime, BuildGoVersion, runtime.GOOS, runtime.GOARCH)
-}
+}*/
 
-// StringifyMultiLine 返回多行格式
+/*// StringifyMultiLine 返回多行格式
 func StringifyMultiLine() string {
 	return fmt.Sprintf("GitTag=%s\nGitCommitLog=%s\nGitStatus=%s\nBuildTime=%s\nGoVersion=%s\nruntime=%s/%s\n",
 		GitTag, GitCommitLog, GitStatus, BuildTime, BuildGoVersion, runtime.GOOS, runtime.GOARCH)
-}
+}*/
 
 // 对一些值做美化处理
 func beauty() {
