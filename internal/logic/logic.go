@@ -5,5 +5,5 @@
 package logic
 
 import (
-	_ "home-network-watcher/internal/logic/middleware"
+	_ "chat-go/internal/logic/l_chat_login"
 )

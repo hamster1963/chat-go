@@ -1,6 +1,7 @@
-package consts
+package g_consts
 
-const IndexHTML = `<!DOCTYPE html>
+const IndexHTML = `
+<!DOCTYPE html>
 <html lang="zh">
 <head>
     <title>仓鼠咖啡馆</title>
@@ -28,4 +29,5 @@ const IndexHTML = `<!DOCTYPE html>
 <body>
 <div class="text">仓鼠咖啡馆</div>
 </body>
-</html>`
+</html>
+`
