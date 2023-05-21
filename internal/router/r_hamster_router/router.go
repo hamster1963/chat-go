@@ -1,7 +1,7 @@
 package r_hamster_router
 
 import (
-	"chat-go/internal/controller"
+	"chat-go/internal/controller/c_chat_login"
 	"github.com/gogf/gf/v2/net/ghttp"
 )
 
@@ -17,6 +17,6 @@ func BindChatUser(group *ghttp.RouterGroup) {
 		// 自定中间件设置
 		// group.Middleware(middleware.JWTAuth)
 		// Bind注册路由
-		group.Bind(controller.ChatLogin)
+		group.Bind(c_chat_login.ChatLogin)
 	})
 }

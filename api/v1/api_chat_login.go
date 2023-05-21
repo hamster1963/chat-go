@@ -10,7 +10,7 @@ type LoginReq struct {
 
 // LoginRes 用户登入 Res返回
 type LoginRes struct {
-	JWT string `json:"jwt" dc:"JWT"`
+	JWT *string `json:"jwt" dc:"JWT"`
 }
 
 // EmptyReq 空请求 Req请求

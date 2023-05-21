@@ -34,9 +34,13 @@ jobs:
         echo "${{env.GIT_COMMIT_LOG}}"
         echo "${{env.BUILD_TIME}}"
 
-
-    - name: Build
+    - name: Install GF CLI dependencies
       run: |
-        go build -v ./...
+        go get github.com/gogf/gf/cmd/gf/v2
+        go install github.com/gogf/gf/cmd/gf/v2
+
+    - name: GF CLI Build Binary
+      run: |
+        gf build 
         pwd
 
