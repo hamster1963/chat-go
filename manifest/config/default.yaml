@@ -35,7 +35,7 @@ database:
     path: "./LOG/db"       # 日志输出目录
     file: "db-{Y-m-d}.log"  # 输出日志命名格式。
   default:
-    link: "mysql:chat_im:WwZSxS4dkaFSCsZ3@tcp(120.24.211.49:3306)/chat_im" # 数据库链接
+    link: "mysql:chat_im:zmHZ3FDsaKHWcAkH@tcp(120.24.211.49:3306)/chat_im" # 数据库链接
     timezone: "Asia/Shanghai" # 时区
     debug: false              # 是否开启调试模式
 

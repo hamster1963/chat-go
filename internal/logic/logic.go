@@ -6,4 +6,5 @@ package logic
 
 import (
 	_ "chat-go/internal/logic/l_chat_login"
+	_ "chat-go/internal/logic/l_chat_message"
 )

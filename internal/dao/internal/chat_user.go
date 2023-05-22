@@ -23,6 +23,7 @@ type ChatUserColumns struct {
 	Id           string // 用户ID
 	Username     string // 用户名
 	LastChatTime string // 上次聊天时间
+	UserStatus   string // 用户状态
 }
 
 // chatUserColumns holds the columns for table chat_user.
@@ -30,6 +31,7 @@ var chatUserColumns = ChatUserColumns{
 	Id:           "id",
 	Username:     "username",
 	LastChatTime: "last_chat_time",
+	UserStatus:   "user_status",
 }
 
 // NewChatUserDao creates and returns a new DAO object for table data access.

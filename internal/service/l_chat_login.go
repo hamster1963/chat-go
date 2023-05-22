@@ -13,7 +13,7 @@ import (
 type (
 	IChatLogin interface {
 		SelectByUsername(ctx context.Context, in *string) (out *entity.ChatUser, err error)
-		GenerateUserJWT(ctx context.Context, in *entity.ChatUser) (out *string, err error)
+		GenerateUserJWT(_ context.Context, in *entity.ChatUser) (out *string, err error)
 	}
 )
 

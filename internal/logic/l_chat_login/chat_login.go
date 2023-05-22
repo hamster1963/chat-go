@@ -47,7 +47,7 @@ func (s *sChatLogin) SelectByUsername(ctx context.Context, in *string) (out *ent
 //	@params: 用户信息-in
 //	@response: JWT-out, err-out
 //	@author:laixin @date:2023/5/19 11:22:18
-func (s *sChatLogin) GenerateUserJWT(ctx context.Context, in *entity.ChatUser) (out *string, err error) {
+func (s *sChatLogin) GenerateUserJWT(_ context.Context, in *entity.ChatUser) (out *string, err error) {
 	claims := jwt.RegisteredClaims{
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 		IssuedAt:  jwt.NewNumericDate(time.Now()),

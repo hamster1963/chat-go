@@ -133,7 +133,7 @@ func (s *sMiddleware) JWTAuth(r *ghttp.Request) {
 		return
 	}
 
-	r.SetCtxVar("user_id", audience[0])
+	r.SetCtxVar("userId", audience[0])
 	r.Middleware.Next()
 }
 

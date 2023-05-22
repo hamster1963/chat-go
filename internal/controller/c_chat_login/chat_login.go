@@ -1,7 +1,7 @@
 package c_chat_login
 
 import (
-	v1 "chat-go/api/v1"
+	v1 "chat-go/api/v1/api_chat_login"
 	"chat-go/internal/global/g_functions"
 	"chat-go/internal/service"
 	"context"

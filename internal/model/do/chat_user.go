@@ -15,4 +15,5 @@ type ChatUser struct {
 	Id           interface{} // 用户ID
 	Username     interface{} // 用户名
 	LastChatTime *gtime.Time // 上次聊天时间
+	UserStatus   interface{} // 用户状态
 }

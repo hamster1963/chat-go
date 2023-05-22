@@ -10,7 +10,8 @@ import (
 
 // ChatUser is the golang structure for table chat_user.
 type ChatUser struct {
-	Id           uint        `json:"id"             ` // 用户ID
-	Username     string      `json:"username"       ` // 用户名
-	LastChatTime *gtime.Time `json:"last_chat_time" ` // 上次聊天时间
+	Id           uint        `json:"id"             description:"用户ID"`   // 用户ID
+	Username     string      `json:"username"       description:"用户名"`    // 用户名
+	LastChatTime *gtime.Time `json:"last_chat_time" description:"上次聊天时间"` // 上次聊天时间
+	UserStatus   int         `json:"user_status"    description:"用户状态"`   // 用户状态
 }

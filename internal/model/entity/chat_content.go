@@ -10,11 +10,11 @@ import (
 
 // ChatContent is the golang structure for table chat_content.
 type ChatContent struct {
-	Id         uint        `json:"id"          ` // 聊天信息ID
-	Content    string      `json:"content"     ` // 聊天内容
-	Read       int         `json:"read"        ` // 是否已读
-	SendId     int         `json:"send_id"     ` // 发送者ID
-	ReceiveId  int         `json:"receive_id"  ` // 接收者ID
-	CreateTime *gtime.Time `json:"create_time" ` // 创建时间
-	ReadTime   *gtime.Time `json:"read_time"   ` // 已读时间
+	Id         uint        `json:"id"          description:"聊天信息ID"` // 聊天信息ID
+	Content    string      `json:"content"     description:"聊天内容"`   // 聊天内容
+	Read       int         `json:"read"        description:"是否已读"`   // 是否已读
+	SendId     int         `json:"send_id"     description:"发送者ID"`  // 发送者ID
+	ReceiveId  int         `json:"receive_id"  description:"接收者ID"`  // 接收者ID
+	CreateTime *gtime.Time `json:"create_time" description:"创建时间"`   // 创建时间
+	ReadTime   *gtime.Time `json:"read_time"   description:"已读时间"`   // 已读时间
 }
